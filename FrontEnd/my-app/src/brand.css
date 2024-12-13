@@ -1,0 +1,66 @@
+.brand-page {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(to bottom right, #43cea2, #185a9d); /* Gradient background */
+  min-height: 100vh; /* Full viewport height */
+}
+
+.product-list {
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* Increased gap between product cards */
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.product-card {
+  background: #ffffff;
+  border-radius: 12px; /* Slightly more rounded corners */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow for emphasis */
+  padding: 30px; /* Increased padding for larger content area */
+  text-align: center;
+  width: 250px; /* Increased card width */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.1); /* Slightly stronger scale effect */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.product-image {
+  width: 150px; /* Adjust the width */
+  height: 150px; /* Ensure height matches width for a square image */
+  margin-bottom: 10px;
+  object-fit: cover; /* Ensures the image retains its aspect ratio and fills the box */
+  border-radius: 10px; /* Optional: Makes the image slightly rounded */
+  border: 2px solid #007bff; /* Keeps the border intact */
+}
+
+
+.back-button {
+  margin-top: 20px; /* Added spacing above the button */
+  padding: 12px 24px; /* Increased padding for larger button */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px; /* Slightly more rounded corners */
+  font-size: 16px; /* Larger font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.product-card h2 {
+  font-size: 18px; /* Increased font size for product names */
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-card p {
+  font-size: 16px; /* Larger font for product prices */
+  color: #555;
+}
