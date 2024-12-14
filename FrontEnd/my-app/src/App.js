@@ -7,6 +7,7 @@ import BrandB from './BrandB';
 import BrandC from './BrandC';
 import Cart from './cart';
 import Checkout from './CheckoutPage'; // Import CheckoutPage
+import Navbar from './navbar'; // Import the new Navbar component
 
 function App() {
   const [page, setPage] = useState('login'); // Default to login page
@@ -18,17 +19,22 @@ function App() {
     setPage('home'); // Navigate to home after login
   };
 
-  const addToCart = (productId) => {
+  const addToCart = (product) => {
     setCartItems((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === productId.id);
+      const existingProduct = prevCart.find((item) => item.productId === product.productId);
       if (existingProduct) {
+        // If the product already exists, update its quantity
         return prevCart.map((item) =>
-          item.id === productId.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.productId === product.productId
+            ? { ...item, quantity: item.quantity + 1 } // Increment quantity
+            : item
         );
       }
-      return [...prevCart, { ...productId, quantity: 1 }];
+      // If it's a new product, add it to the cart with quantity 1
+      return [...prevCart, { ...product, quantity: 1 }];
     });
   };
+  
 
   const removeFromCart = (productId) => {
     setCartItems((prevCart) =>
@@ -52,13 +58,21 @@ function App() {
     setPage('checkout'); // Navigate to checkout page
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setPage('login');
+  };
+
   return (
     <div className="App">
-      <nav>
-        <button onClick={() => setPage('home')}>Home</button>
-        <button onClick={goToCart}>View Cart ({cartItems.length})</button>
-        {isAuthenticated && <button onClick={() => setPage('login')}>Logout</button>}
-      </nav>
+      {/* Navbar */}
+      <Navbar
+        handleReturnHome={goToHome}
+        goToCart={goToCart}
+        handleBrowseServices={() => setPage('services')}
+        isAuthenticated={isAuthenticated}
+        handleLogout={handleLogout}
+      />
 
       {page === 'home' && (
         <HomePage navigateTo={setPage} goToCart={goToCart} />

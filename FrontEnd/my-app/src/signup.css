@@ -2,7 +2,7 @@
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #4a659b;
+  background-color: #000612;
 }
 
 .signup-container {
@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom right, #43cea2, #185a9d);
+  background-color: #000612;
 }
 
 .signup-form {

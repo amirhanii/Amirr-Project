@@ -18,22 +18,22 @@ server.post('/user/login', (req, res) => {
   db.get('SELECT * FROM USERS WHERE EMAIL=?', [email], (err, row) => {
     if (err) {
       console.error('Error retrieving user data:', err);
-      return res.status(500).send('Error retrieving user data.');
+      return res.status(500).json({ error: 'Error retrieving user data.' });
     }
     if (!row) {
-      return res.status(404).send('User not found');
+      return res.status(404).json({ error: 'User not found' });
     }
 
     bcrypt.compare(password, row.PASSWORD, (err, isMatch) => {
       if (err) {
         console.error('Error comparing passwords:', err);
-        return res.status(500).send('Error comparing passwords.');
+        return res.status(500).json({ error: 'Error comparing passwords.' });
       }
       if (!isMatch) {
-        return res.status(401).send('Invalid credentials');
+        return res.status(401).json({ error: 'Invalid credentials' });
       }
 
-      return res.status(200).send('Login successful');
+      return res.status(200).json({ name: row.NAME });
     });
   });
 });
@@ -45,26 +45,29 @@ server.post('/user/register', (req, res) => {
   db.get('SELECT * FROM USERS WHERE EMAIL = ?', [email], (err, row) => {
     if (err) {
       console.error('Error checking email:', err);
-      return res.status(500).send('Error checking email.');
+      return res.status(500).json({ error: 'Error checking email.' });
     }
     if (row) {
-      return res.status(400).send('Email already in use.');
+      return res.status(400).json({ error: 'Email already in use.' });
     }
 
     bcrypt.hash(password, 10, (err, hashedPassword) => {
       if (err) {
         console.error('Error hashing password:', err);
-        return res.status(500).send('Error hashing password');
+        return res.status(500).json({ error: 'Error hashing password' });
       }
 
-      db.run('INSERT INTO USERS (NAME, EMAIL, PASSWORD) VALUES (?, ?, ?)',
-        [name, email, hashedPassword], (err) => {
+      db.run(
+        'INSERT INTO USERS (NAME, EMAIL, PASSWORD) VALUES (?, ?, ?)',
+        [name, email, hashedPassword],
+        (err) => {
           if (err) {
             console.error('Error registering user:', err);
-            return res.status(500).send('Error registering user.');
+            return res.status(500).json({ error: 'Error registering user.' });
           }
-          return res.status(200).send('Registration successful');
-        });
+          return res.status(200).json({ message: 'Registration successful' });
+        }
+      );
     });
   });
 });
@@ -73,19 +76,16 @@ server.post('/user/register', (req, res) => {
 server.post('/orders/checkout', (req, res) => {
   const { userId, cartItems, totalPrice, name, email, address, phone } = req.body;
 
-  // Validate the data
   if (!userId || !cartItems || !totalPrice || !address || !phone) {
-    return res.status(400).send('Missing required fields.');
+    return res.status(400).json({ error: 'Missing required fields.' });
   }
 
-  // Check if each cartItem has a valid productId
   for (let item of cartItems) {
     if (!item.productId) {
-      return res.status(400).send('Product ID is missing in one of the cart items.');
+      return res.status(400).json({ error: 'Product ID is missing in one of the cart items.' });
     }
   }
 
-  // Insert each item in the cart into the ORDERS table
   const insertOrder = (cartItem) => {
     return new Promise((resolve, reject) => {
       db.run(
@@ -103,15 +103,13 @@ server.post('/orders/checkout', (req, res) => {
     });
   };
 
-  // Process each cart item
   Promise.all(cartItems.map((item) => insertOrder(item)))
     .then(() => {
-      // Successfully placed order
-      res.status(200).send('Order placed successfully!');
+      res.status(200).json({ message: 'Order placed successfully!' });
     })
     .catch((error) => {
       console.error('Error during order placement:', error);
-      res.status(500).send(error);
+      res.status(500).json({ error });
     });
 });
 

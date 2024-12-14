@@ -2,14 +2,14 @@
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background: linear-gradient(to bottom right, #43cea2, #185a9d); /* Fixed background gradient */
-    color: #333; /* Ensure text is readable */
+    background-color: #000612; /* Fixed background gradient */
+    color: #fffafa; /* Ensure text is readable */
     min-height: 100vh; /* Full height for better layout */
   }
   
   .cart-item {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: column; /* Stack items vertically */  
     align-items: center; /* Center align content */
     margin-bottom: 20px;
   }

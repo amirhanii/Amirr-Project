@@ -1,7 +1,7 @@
 .brand-page {
   text-align: center;
   padding: 20px;
-  background: linear-gradient(to bottom right, #43cea2, #185a9d); /* Gradient background */
+  background-color: #000612; /* Gradient background */
   min-height: 100vh; /* Full viewport height */
 }
 
