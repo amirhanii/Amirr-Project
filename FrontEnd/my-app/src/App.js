@@ -6,6 +6,7 @@ import BrandA from './BrandA';
 import BrandB from './BrandB';
 import BrandC from './BrandC';
 import Cart from './cart';
+import Checkout from './CheckoutPage'; // Import CheckoutPage
 
 function App() {
   const [page, setPage] = useState('login'); // Default to login page
@@ -47,6 +48,10 @@ function App() {
     setCartItems([]);
   };
 
+  const proceedToCheckout = () => {
+    setPage('checkout'); // Navigate to checkout page
+  };
+
   return (
     <div className="App">
       <nav>
@@ -74,6 +79,15 @@ function App() {
           removeFromCart={removeFromCart}
           userId={1} // Replace with actual logged-in user ID
           clearCart={clearCart}
+          proceedToCheckout={proceedToCheckout}
+        />
+      )}
+      {page === 'checkout' && (
+        <Checkout
+          cartItems={cartItems}
+          totalPrice={cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+          userId={1} // Replace with actual logged-in user ID
+          goBack={goToCart}
         />
       )}
       {page === 'login' && <Login toggleAuthPage={() => setPage('signup')} onLoginSuccess={handleLoginSuccess} />}

@@ -3,8 +3,8 @@ import './brand.css';
 
 const BrandC = ({ goBack, addToCart }) => {
   const products = [
-    { id: 5, name: 'Product C1', price: 30, image: 'https://via.placeholder.com/150' },
-    { id: 6, name: 'Product C2', price: 40, image: 'https://via.placeholder.com/150' },
+    { productId: 5, name: 'Product C1', price: 30, image: 'https://via.placeholder.com/150' },
+    { productId: 6, name: 'Product C2', price: 40, image: 'https://via.placeholder.com/150' },
   ];
 
   return (
@@ -12,7 +12,7 @@ const BrandC = ({ goBack, addToCart }) => {
       <h1>Brand C</h1>
       <div className="product-list">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
+          <div key={product.productId} className="product-card">
             <img src={product.image} alt={product.name} className="product-image" />
             <h2>{product.name}</h2>
             <p>${product.price}</p>
