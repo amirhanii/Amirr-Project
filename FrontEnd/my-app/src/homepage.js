@@ -17,9 +17,9 @@ const HomePage = ({ navigateTo }) => {
           <p>Sports Clothing and Footwear for Athelets.</p>
         </div>
         <div className="brand-card" onClick={() => navigateTo('BrandC')}>
-          <img src="https://via.placeholder.com/150" alt="Brand C Logo" className="brand-image" />
-          <h2>Brand C</h2>
-          <p>Affordable and trendy outfits by Brand C.</p>
+          <img src="https://images.seeklogo.com/logo-png/9/1/new-balance-logo-png_seeklogo-98723.png?v=638687202910000000" alt="New Balance" className="brand-image" />
+          <h2>New Balance</h2>
+          <p>Casual and Sportswear and shoes , Modern Designs.</p>
         </div>
       </div>
     </div>

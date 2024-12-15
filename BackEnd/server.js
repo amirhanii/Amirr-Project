@@ -8,7 +8,7 @@ const port = 555;
 
 // Middleware
 server.use(cors());
-server.use(express.json()); // Parse JSON request bodies
+server.use(express.json()); // Parse JSON request bodies    
 server.use(express.static('public')); // Serve static files
 
 // User Login Route
