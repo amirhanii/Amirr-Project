@@ -20,7 +20,7 @@ const Login = ({ toggleAuthPage, onLoginSuccess }) => {
     setLoading(true); // Set loading state during login
     setErrorMessage(''); // Clear any previous error messages
 
-    try {
+    try { 
       const response = await fetch('http://localhost:555/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

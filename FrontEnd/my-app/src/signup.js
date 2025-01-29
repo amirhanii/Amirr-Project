@@ -79,3 +79,4 @@ const SignUp = ({ toggleAuthPage }) => {
 };
 
 export default SignUp;
+  

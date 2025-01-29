@@ -6,7 +6,6 @@ const db = db_access.db;
 const server = express();
 const port = 555;
 
-// Middleware
 server.use(cors());
 server.use(express.json()); // Parse JSON request bodies    
 server.use(express.static('public')); // Serve static files
@@ -80,37 +79,29 @@ server.post('/orders/checkout', (req, res) => {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
-  for (let item of cartItems) {
-    if (!item.productId) {
-      return res.status(400).json({ error: 'Product ID is missing in one of the cart items.' });
-    }
+  let errors = [];
+  let success = true;
+
+  cartItems.forEach((cartItem) => {
+    db.run(
+      'INSERT INTO ORDERS (USER_ID, PRODUCT_ID, QUANTITY, TOTAL_PRICE, ADDRESS, PHONE) VALUES (?, ?, ?, ?, ?, ?)',
+      [userId, cartItem.productId, cartItem.quantity, totalPrice, address, phone],
+      function (err) {
+        if (err) {
+          console.error('Error inserting order:', err);
+          errors.push(err);
+          success = false;
+        }
+      }
+    );
+  });
+
+  if (!success) {
+    console.error('Error during order placement:', errors.join('; '));
+    return res.status(500).json({ error: 'Failed to place order due to errors.' });
   }
 
-  const insertOrder = (cartItem) => {
-    return new Promise((resolve, reject) => {
-      db.run(
-        'INSERT INTO ORDERS (USER_ID, PRODUCT_ID, QUANTITY, TOTAL_PRICE, ADDRESS, PHONE) VALUES (?, ?, ?, ?, ?, ?)',
-        [userId, cartItem.productId, cartItem.quantity, totalPrice, address, phone],
-        function (err) {
-          if (err) {
-            console.error('Error inserting order:', err);
-            reject('Failed to insert order');
-          } else {
-            resolve();
-          }
-        }
-      );
-    });
-  };
-
-  Promise.all(cartItems.map((item) => insertOrder(item)))
-    .then(() => {
-      res.status(200).json({ message: 'Order placed successfully!' });
-    })
-    .catch((error) => {
-      console.error('Error during order placement:', error);
-      res.status(500).json({ error });
-    });
+  res.status(200).json({ message: 'Order placed successfully!' });
 });
 
 // Server Initialization

@@ -21,15 +21,7 @@ const Checkout = ({ cartItems, totalPrice, userId, goBack }) => {
       alert('Please fill in all the required fields.');
       return;
     }
-
-    // Ensure each cartItem has a productId
-    cartItems.forEach(item => {
-      if (!item.productId) {
-        alert('Each cart item must have a valid productId.');
-        return;
-      }
-    });
-
+    
     try {
       const response = await fetch('http://localhost:555/orders/checkout', {
         method: 'POST',

@@ -7,7 +7,7 @@ import BrandB from './BrandB';
 import BrandC from './BrandC';
 import Cart from './cart';
 import Checkout from './CheckoutPage'; // Import CheckoutPage
-import Navbar from './navbar'; // Import the new Navbar component
+import Navbar from './navbar'; // Import the Navbar component
 
 function App() {
   const [page, setPage] = useState('login'); // Default to login page
@@ -50,9 +50,7 @@ function App() {
     setPage('home');
   };
 
-  const clearCart = () => {
-    setCartItems([]);
-  };
+
 
   const proceedToCheckout = () => {
     setPage('checkout'); // Navigate to checkout page
@@ -69,7 +67,6 @@ function App() {
       <Navbar
         handleReturnHome={goToHome}
         goToCart={goToCart}
-        handleBrowseServices={() => setPage('services')}
         isAuthenticated={isAuthenticated}
         handleLogout={handleLogout}
       />
@@ -78,21 +75,19 @@ function App() {
         <HomePage navigateTo={setPage} goToCart={goToCart} />
       )}
       {page === 'BrandA' && (
-        <BrandA goBack={goToHome} addToCart={addToCart} />
+        <BrandA  addToCart={addToCart} />
       )}
       {page === 'BrandB' && (
-        <BrandB goBack={goToHome} addToCart={addToCart} />
+        <BrandB  addToCart={addToCart} />
       )}
       {page === 'BrandC' && (
-        <BrandC goBack={goToHome} addToCart={addToCart} />
+        <BrandC  addToCart={addToCart} />
       )}
       {page === 'cart' && (
         <Cart
           cartItems={cartItems}
           goBack={goToHome}
           removeFromCart={removeFromCart}
-          userId={1} // Replace with actual logged-in user ID
-          clearCart={clearCart}
           proceedToCheckout={proceedToCheckout}
         />
       )}
@@ -100,7 +95,6 @@ function App() {
         <Checkout
           cartItems={cartItems}
           totalPrice={cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}
-          userId={1} // Replace with actual logged-in user ID
           goBack={goToCart}
         />
       )}
