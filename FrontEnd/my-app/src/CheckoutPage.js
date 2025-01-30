@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './CheckoutPage.css'; // Add CSS styles for better UI
+import './CheckoutPage.css'; 
 
 const Checkout = ({ cartItems, totalPrice, userId, goBack }) => {
   const [formData, setFormData] = useState({
@@ -33,7 +33,7 @@ const Checkout = ({ cartItems, totalPrice, userId, goBack }) => {
 
       if (response.ok) {
         alert('Order placed successfully!');
-        goBack(); // Navigate back to home or reset the cart after order
+        goBack(); 
       } else {
         alert('Failed to place order. Please try again.');
       }

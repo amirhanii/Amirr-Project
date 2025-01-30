@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const Checkout = ({ cartItems, totalPrice, userId, goBack }) => {
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
+  const [address, Address] = useState('');
+  const [phone, Phone] = useState('');
 
-  const handlePlaceOrder = async () => {
+  const PlaceOrder = async () => {
     if (!address || !phone) {
       alert('Please fill in all the required fields.');
       return;
@@ -40,7 +40,7 @@ const Checkout = ({ cartItems, totalPrice, userId, goBack }) => {
           <input
             type="text"
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={(e) => Address(e.target.value)}
             placeholder="Enter your address"
             required
           />
@@ -50,14 +50,14 @@ const Checkout = ({ cartItems, totalPrice, userId, goBack }) => {
           <input
             type="text"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => Phone(e.target.value)}
             placeholder="Enter your phone number"
             required
           />
         </div>
       </form>
       <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
-      <button onClick={handlePlaceOrder} className="place-order-button">
+      <button onClick={PlaceOrder} className="place-order-button">
         Place Order
       </button>
       <button onClick={goBack} className="back-button">

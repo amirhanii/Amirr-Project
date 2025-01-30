@@ -75,19 +75,21 @@ function App() {
         <HomePage navigateTo={setPage} goToCart={goToCart} />
       )}
       {page === 'BrandA' && (
-        <BrandA  addToCart={addToCart} />
+        <BrandA goBack={goToHome} addToCart={addToCart} />
       )}
       {page === 'BrandB' && (
-        <BrandB  addToCart={addToCart} />
+        <BrandB goBack={goToHome} addToCart={addToCart} />
       )}
       {page === 'BrandC' && (
-        <BrandC  addToCart={addToCart} />
+        <BrandC goBack={goToHome} addToCart={addToCart} />
       )}
       {page === 'cart' && (
         <Cart
           cartItems={cartItems}
           goBack={goToHome}
           removeFromCart={removeFromCart}
+          userId={1} // Replace with actual logged-in user ID
+         
           proceedToCheckout={proceedToCheckout}
         />
       )}
@@ -95,6 +97,7 @@ function App() {
         <Checkout
           cartItems={cartItems}
           totalPrice={cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+          userId={1} // Replace with actual logged-in user ID
           goBack={goToCart}
         />
       )}

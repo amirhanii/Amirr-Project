@@ -1,7 +1,7 @@
 import React from 'react';
 import './brand.css';
 
-const BrandB = ({ goBack, addToCart }) => {
+const BrandB = ({ addToCart }) => {
   const products = [
     { productId: 3, name: 'Running Shoes', price: 75, image: 'https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/30d7afaa-343b-4439-b65d-bb544c65420e/NIKE+REVOLUTION+7.png' },
     { productId: 4, name: 'AirForce 1', price: 35, image: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/05856ac7-0129-4395-bd6e-2fe2669025fb/custom-nike-dunk-low-by-you-su24.png' },

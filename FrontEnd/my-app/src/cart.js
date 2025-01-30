@@ -1,7 +1,7 @@
 import React from 'react';
 import './cart.css';
 
-const Cart = ({ cartItems, goBack, removeFromCart, proceedToCheckout }) => {
+const Cart = ({ cartItems, goBack, removeFromCart: RemovefromCart, proceedToCheckout }) => {
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
@@ -14,14 +14,14 @@ const Cart = ({ cartItems, goBack, removeFromCart, proceedToCheckout }) => {
         <>
           <ul className="cart-list">
             {cartItems.map((item) => (
-              <li key={item.productId} className="cart-item"> {/* Use productId as the key */}
+              <li key={item.productId} className="cart-item"> 
                 <img src={item.image} alt={item.name} className="cart-image" />
                 <div>
                   <strong>{item.name}</strong> x {item.quantity}
                 </div>
                 <div>${(item.price * item.quantity).toFixed(2)}</div>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => RemovefromCart(item.id)}
                   className="remove-cart-button"
                 >
                   Remove
