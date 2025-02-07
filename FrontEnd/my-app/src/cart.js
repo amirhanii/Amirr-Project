@@ -2,26 +2,27 @@ import React from 'react';
 import './cart.css';
 
 const Cart = ({ cartItems, goBack, removeFromCart: RemovefromCart, proceedToCheckout }) => {
-  const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce((acc, item) => acc + item.PRICE * item.quantity, 0);
+
 
   return (
     <div className="cart-container">
       <h2>Your Cart</h2>
-      
+
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <>
           <ul className="cart-list">
             {cartItems.map((item) => (
-              <li key={item.productId} className="cart-item"> 
-                <img src={item.image} alt={item.name} className="cart-image" />
+              <li key={item.ID} className="cart-item">
+                <img src={item.IMAGE} alt={item.NAME} className="cart-image" />
                 <div>
-                  <strong>{item.name}</strong> x {item.quantity}
+                  <strong>{item.NAME}</strong> x {item.quantity}
                 </div>
-                <div>${(item.price * item.quantity).toFixed(2)}</div>
+                <div>${(item.PRICE * item.quantity).toFixed(2)}</div>
                 <button
-                  onClick={() => RemovefromCart(item.id)}
+                  onClick={() => RemovefromCart(item.ID)} // Use 'ID' instead of 'id'
                   className="remove-cart-button"
                 >
                   Remove

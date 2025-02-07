@@ -6,103 +6,60 @@ import BrandA from './BrandA';
 import BrandB from './BrandB';
 import BrandC from './BrandC';
 import Cart from './cart';
-import Checkout from './CheckoutPage'; // Import CheckoutPage
-import Navbar from './navbar'; // Import the Navbar component
+import Checkout from './CheckoutPage'; 
+import Navbar from './navbar'; 
 
 function App() {
-  const [page, setPage] = useState('login'); // Default to login page
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication status
-  const [cartItems, setCartItems] = useState([]); // Track items in the cart
+  const [page, setPage] = useState('login');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
-    setPage('home'); // Navigate to home after login
+    setPage('home');
   };
 
-  const addToCart = (product) => {
+  const updateCart = (product, action) => {
     setCartItems((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.productId === product.productId);
+      const existingProduct = prevCart.find((item) => item.ID === product.ID);
       if (existingProduct) {
-        // If the product already exists, update its quantity
-        return prevCart.map((item) =>
-          item.productId === product.productId
-            ? { ...item, quantity: item.quantity + 1 } // Increment quantity
+        return prevCart.map((item) => 
+          item.ID === product.ID 
+            ? { ...item, quantity: action === 'add' ? item.quantity + 1 : Math.max(0, item.quantity - 1) }
             : item
-        );
+        ).filter(item => item.quantity > 0);
       }
-      // If it's a new product, add it to the cart with quantity 1
-      return [...prevCart, { ...product, quantity: 1 }];
+      return action === 'add' 
+        ? [...prevCart, { ...product, quantity: 1 }] 
+        : prevCart;
     });
   };
   
 
-  const removeFromCart = (productId) => {
-    setCartItems((prevCart) =>
-      prevCart.filter((item) => item.id !== productId)
-    );
-  };
-
-  const goToCart = () => {
-    setPage('cart');
-  };
-
-  const goToHome = () => {
-    setPage('home');
-  };
-
-
-
-  const proceedToCheckout = () => {
-    setPage('checkout'); // Navigate to checkout page
-  };
+  const navigateTo = (targetPage) => setPage(targetPage);
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     setPage('login');
   };
 
+  const totalPrice = cartItems.reduce((acc, item) => acc + item.PRICE * item.quantity, 0);
+
+  const pages = {
+    home: <HomePage navigateTo={navigateTo} goToCart={() => setPage('cart')} />,
+    BrandA: <BrandA goBack={() => setPage('home')} addToCart={(product) => updateCart(product, 'add')} />,
+    BrandB: <BrandB goBack={() => setPage('home')} addToCart={(product) => updateCart(product, 'add')} />,
+    BrandC: <BrandC goBack={() => setPage('home')} addToCart={(product) => updateCart(product, 'add')} />,
+    cart: <Cart cartItems={cartItems} goBack={() => setPage('home')} removeFromCart={(productId) => updateCart({ productId }, 'remove')} proceedToCheckout={() => setPage('checkout')} />,
+    checkout: <Checkout cartItems={cartItems} totalPrice={totalPrice} userId={1} goBack={() => setPage('cart')} />,
+    login: <Login toggleAuthPage={() => setPage('signup')} onLoginSuccess={handleLoginSuccess} />,
+    signup: <SignUp toggleAuthPage={() => setPage('login')} />,
+  };
+
   return (
     <div className="App">
-      {/* Navbar */}
-      <Navbar
-        handleReturnHome={goToHome}
-        goToCart={goToCart}
-        isAuthenticated={isAuthenticated}
-        handleLogout={handleLogout}
-      />
-
-      {page === 'home' && (
-        <HomePage navigateTo={setPage} goToCart={goToCart} />
-      )}
-      {page === 'BrandA' && (
-        <BrandA goBack={goToHome} addToCart={addToCart} />
-      )}
-      {page === 'BrandB' && (
-        <BrandB goBack={goToHome} addToCart={addToCart} />
-      )}
-      {page === 'BrandC' && (
-        <BrandC goBack={goToHome} addToCart={addToCart} />
-      )}
-      {page === 'cart' && (
-        <Cart
-          cartItems={cartItems}
-          goBack={goToHome}
-          removeFromCart={removeFromCart}
-          userId={1} // Replace with actual logged-in user ID
-         
-          proceedToCheckout={proceedToCheckout}
-        />
-      )}
-      {page === 'checkout' && (
-        <Checkout
-          cartItems={cartItems}
-          totalPrice={cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}
-          userId={1} // Replace with actual logged-in user ID
-          goBack={goToCart}
-        />
-      )}
-      {page === 'login' && <Login toggleAuthPage={() => setPage('signup')} onLoginSuccess={handleLoginSuccess} />}
-      {page === 'signup' && <SignUp toggleAuthPage={() => setPage('login')} />}
+      <Navbar handleReturnHome={() => setPage('home')} goToCart={() => setPage('cart')} isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+      {pages[page]}
     </div>
   );
 }

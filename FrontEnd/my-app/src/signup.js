@@ -1,25 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './signup.css';
 
 const SignUp = ({ toggleAuthPage }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  let name = '';
+  let email = '';
+  let password = '';
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
       const response = await fetch('http://localhost:555/user/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ name, email, password }),
       });
 
       const result = await response.text();
@@ -44,9 +38,7 @@ const SignUp = ({ toggleAuthPage }) => {
           <input
             type="text"
             id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
+            onChange={(e) => (name = e.target.value)}
             required
           />
         </div>
@@ -55,9 +47,7 @@ const SignUp = ({ toggleAuthPage }) => {
           <input
             type="email"
             id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
+            onChange={(e) => (email = e.target.value)}
             required
           />
         </div>
@@ -66,17 +56,21 @@ const SignUp = ({ toggleAuthPage }) => {
           <input
             type="password"
             id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
+            onChange={(e) => (password = e.target.value)}
             required
           />
         </div>
         <button type="submit">Sign Up</button>
+        <button
+          type="button"
+          className="redirect-button"
+          onClick={toggleAuthPage}
+        >
+          Already have an account? Login
+        </button>
       </form>
     </div>
   );
 };
 
 export default SignUp;
-  

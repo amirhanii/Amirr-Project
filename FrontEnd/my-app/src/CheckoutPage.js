@@ -27,7 +27,9 @@ const Checkout = ({ cartItems, totalPrice, userId, goBack }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+        
         },
+        credentials: 'include',
         body: JSON.stringify({ userId, cartItems, totalPrice, ...formData }),
       });
 

@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './brand.css';
 
-const BrandA = ({ addToCart: addingToCart }) => {
-  const products = [
-    { productId: 1, name: 'Puffer Jacket', price: 20, image: 'https://www.gliks.com/cdn/shop/files/TheNorthFace-Aconcagua-Jacket-Men-Black-1_1400x1400.jpg' },
-    { productId: 2, name: 'Quarter Zip', price: 30, image: 'https://mosaic04.ztat.net/prd/media/comet/TH342G0A0-Q11/PREVIEW_IMG/0002NR0WH8G_image_1718865624.jpg' },
-  ];
+const BrandA = ({ addToCart }) => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:555/products/BrandA')
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }, []);
 
   return (
     <div className="brand-page">
       <h1>Brand A</h1>
-      <div className="product-list">    
+      <div className="product-list">
         {products.map((product) => (
-          <div key={product.productId} className="product-card">
-            <img src={product.image} alt={product.name} className="product-image" />
-            <h2>{product.name}</h2>
-            <p>${product.price}</p>
-            <button onClick={() => addingToCart(product)} className="add-to-cart-button">
+          <div key={product.ID} className="product-card">
+            <img src={product.IMAGE} alt={product.NAME} className="product-image" />
+            <h2>{product.NAME}</h2>
+            <p>${product.PRICE}</p>
+            <button onClick={() => addToCart(product)} className="add-to-cart-button">
               Add to Cart
             </button>
           </div>
