@@ -25,16 +25,15 @@ function App() {
       if (existingProduct) {
         return prevCart.map((item) => 
           item.ID === product.ID 
-            ? { ...item, quantity: action === 'add' ? item.quantity + 1 : Math.max(0, item.quantity - 1) }
+            ? { ...item, productId: item.ID, quantity: action === 'add' ? item.quantity + 1 : Math.max(0, item.quantity - 1) }
             : item
         ).filter(item => item.quantity > 0);
       }
       return action === 'add' 
-        ? [...prevCart, { ...product, quantity: 1 }] 
+        ? [...prevCart, { ...product, productId: product.ID, quantity: 1 }] 
         : prevCart;
     });
   };
-  
 
   const navigateTo = (targetPage) => setPage(targetPage);
 
@@ -45,13 +44,22 @@ function App() {
 
   const totalPrice = cartItems.reduce((acc, item) => acc + item.PRICE * item.quantity, 0);
 
+  const formattedCartItems = cartItems.map(item => ({
+    productId: item.ID, 
+    quantity: item.quantity, 
+    price: item.PRICE
+  }));
+
   const pages = {
     home: <HomePage navigateTo={navigateTo} goToCart={() => setPage('cart')} />,
     BrandA: <BrandA goBack={() => setPage('home')} addToCart={(product) => updateCart(product, 'add')} />,
     BrandB: <BrandB goBack={() => setPage('home')} addToCart={(product) => updateCart(product, 'add')} />,
     BrandC: <BrandC goBack={() => setPage('home')} addToCart={(product) => updateCart(product, 'add')} />,
-    cart: <Cart cartItems={cartItems} goBack={() => setPage('home')} removeFromCart={(productId) => updateCart({ productId }, 'remove')} proceedToCheckout={() => setPage('checkout')} />,
-    checkout: <Checkout cartItems={cartItems} totalPrice={totalPrice} userId={1} goBack={() => setPage('cart')} />,
+    cart: <Cart cartItems={cartItems} goBack={() => setPage('home')} removeFromCart={(productId) => {
+      const product = cartItems.find(item => item.ID === productId);
+      if (product) updateCart(product, 'remove');
+    }} proceedToCheckout={() => setPage('checkout')} />,
+    checkout: <Checkout cartItems={formattedCartItems} totalPrice={totalPrice} userId={1} goBack={() => setPage('cart')} />,
     login: <Login toggleAuthPage={() => setPage('signup')} onLoginSuccess={handleLoginSuccess} />,
     signup: <SignUp toggleAuthPage={() => setPage('login')} />,
   };
