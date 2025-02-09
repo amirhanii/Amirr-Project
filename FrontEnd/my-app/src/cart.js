@@ -1,10 +1,20 @@
 import React from 'react';
 import './cart.css';
 
-const Cart = ({ cartItems, goBack, removeFromCart: RemovefromCart, proceedToCheckout }) => {
+const Cart = ({ cartItems,goBack, removeFromCart: RemovefromCart, proceedToCheckout }) => {
   const totalPrice = cartItems.reduce((acc, item) => acc + item.PRICE * item.quantity, 0);
 
+  const handleCheckout = () => {
+    const formattedCartItems = cartItems.map(item => ({
+      productId: item.ID, 
+      quantity: item.quantity,
+      price: item.PRICE
+    }));
+    
+    proceedToCheckout(formattedCartItems);
+  };
 
+  
   return (
     <div className="cart-container">
       <h2>Your Cart</h2>
@@ -31,7 +41,7 @@ const Cart = ({ cartItems, goBack, removeFromCart: RemovefromCart, proceedToChec
             ))}
           </ul>
           <h3>Total: ${totalPrice.toFixed(2)}</h3>
-          <button onClick={proceedToCheckout} className="proceed-checkout-button">
+          <button onClick={handleCheckout} className="proceed-checkout-button">
             Proceed to Checkout
           </button>
         </>
