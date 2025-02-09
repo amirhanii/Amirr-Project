@@ -58,7 +58,6 @@ server.post('/user/login', (req, res) => {
             res.cookie('authToken', token, {
                 httpOnly: true,
                 sameSite: 'none',
-                secure: true,
                 expiresIn: '1h'
             });
 
@@ -95,7 +94,7 @@ server.post('/user/register', (req, res) => {
 });
 
 // Protected Route: Checkout (Requires Authentication)
-server.post('/orders/checkout', verifyToken, (req, res) => {
+server.post('/orders/checkout', (req, res) => {
     const { userId, cartItems, totalPrice, address, phone } = req.body;
 
     if (!userId || !cartItems || !totalPrice || !address || !phone) {
